@@ -1,0 +1,53 @@
+{% extends "tables.html" %}
+{% block title %} CafeSystem | Удаление всех столов {% endblock %}
+{% block nav-tables %}active{% endblock %}
+{% block page-name %} Вы собираетесь удалить все столики {% endblock %}
+{% block content %}
+<div class="row">
+    <div class="container mb-3">
+        {% if tables %}
+        <p>Показаны 1-10 записей</p>
+        <div class="row mb-3">
+            <div class="tab-content table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Наименование</th>
+                        <th scope="col">Кол-во стульев</th>
+                        <th scope="col">Описание</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for table in tables %}
+                    <tr>
+                        <th scope="row">{{table.id}}</th>
+                        <td>{{table.name}}</td>
+                        <td>{{table.chairs_counts}}</td>
+                        <td>{{table.description}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+        <h4><span class="badge badge-primary">
+            Кол-во записей: <span class="badge .badge-pill badge-light">{{data_length}}</span>
+            <span class="sr-only">Кол-во записей: </span>
+        </span></h4>
+    </div>
+    <div class="container">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input id="agreeCheck" type="checkbox"
+                       onchange="document.getElementById('agree').disabled = !this.checked;"/>
+                <label for="agreeCheck">Я подтверждаю, что это действие нельзя отменить!</label>
+            </div>
+            <button type="submit" id="agree" class="btn btn-danger" disabled>Удалить</button>
+            <a class="btn btn-secondary" href="{% url 'tables' %}">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

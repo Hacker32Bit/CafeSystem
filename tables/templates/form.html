@@ -1,0 +1,27 @@
+{% extends "tables.html" %}
+{% block title %} CafeSystem | Создать столик {% endblock %}
+{% block nav-tables %}active{% endblock %}
+{% block page-name %} Форма создания стола {% endblock %}
+{% block content %}
+<div class="row">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            {% if field.errors %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+
+            {% endfor %}
+            {% endif %}
+            {{ field.label_tag }}
+            {{ field }}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success">Сохранить</button>
+
+    </form>
+</div>
+{% endblock %}

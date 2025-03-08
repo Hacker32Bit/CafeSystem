@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %} CafeSystem {% endblock %}
+{% block nav-tables %}active{% endblock %}
+{% block page-name %} Столы {% endblock %}
+{% block content %}
+<div class="row mb-3">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a class="btn btn-success" href="create" role="button">Создать</a>
+        <a class="btn btn-danger" href="delete_all" role="button">Удалить все</a>
+    </div>
+</div>
+<div class="row mb-3">
+    {% if tables %}
+    <div class="tab-content table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Кол-во стульев</th>
+                <th scope="col">Описание</th>
+                <th scope="col">Действие</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for table in tables %}
+            <tr>
+                <th scope="row">{{table.id}}</th>
+                <td>{{table.name}}</td>
+                <td>{{table.chairs_counts}}</td>
+                <td>{{table.description}}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a class="btn btn-primary" href="{% url 'update' table.id %}" role="button">Изменить</a>
+                        <a class="btn btn-danger" href="{% url 'delete' table.id %}" role="button">Удалить</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        Отсутствуют столики!
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

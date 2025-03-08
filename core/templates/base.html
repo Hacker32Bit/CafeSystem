@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+    {% block nav %}
+    <a class="navbar-brand" href="#">CafeSystem</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span
+            class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item {% block nav-index %}{% endblock %}">
+                <a class="nav-link" href="{% url 'index' %}">Главная</a>
+            </li>
+            <li class="nav-item {% block nav-orders %}{% endblock %}">
+                <a class="nav-link" href="{% url 'orders' %}">Управление заказами</a>
+            </li>
+            <li class="nav-item {% block nav-products %}{% endblock %}">
+                <a class="nav-link" href="{% url 'products' %}">Управление продуктами</a>
+            </li>
+            <li class="nav-item {% block nav-tables %}{% endblock %}">
+                <a class="nav-link" href="{% url 'tables' %}">Управление столами</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}
+<div class="container">
+    <h1 class="mb-5">{% block page-name %} {% endblock %}</h1>
+    {% block content %} {% endblock %}
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
