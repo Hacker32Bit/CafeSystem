@@ -1,0 +1,37 @@
+{% extends "orders.html" %}
+{% block title %} CafeSystem | Удалить заказ {% endblock %}
+{% block nav-orders %}active{% endblock %}
+{% block page-name %} Вы собираетесь удалить: "{{order.name}}" {% endblock %}
+{% block content %}
+<div class="row">
+    <div class="container mb-3">
+        <h4><span class="badge badge-secondary">#{{order.id}}</span> {{order.name}} </h4>
+        <h4><span class="badge badge-primary">
+            Кол-во стульев: <span class="badge badge-light">{{order.chairs_counts}}</span>
+            <span class="sr-only">Кол-во стульев: </span>
+        </span></h4>
+        {% if product.description %}
+        <div class="card">
+            <div class="card-header">
+                Описание:
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{order.description}}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="container">
+        <form action="{% url 'order-delete' order.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input id="agreeCheck" type="checkbox"
+                       onchange="document.getElementById('agree').disabled = !this.checked;"/>
+                <label for="agreeCheck">Я подтверждаю, что это действие нельзя отменить!</label>
+            </div>
+            <button type="submit" id="agree" class="btn btn-danger" disabled>Удалить</button>
+            <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,7 +1,153 @@
 {% extends "base.html" %}
 {% block title %} CafeSystem {% endblock %}
-{% block nav-home %}active{% endblock %}
-{% block page-name %} Главная {% endblock %}
+{% block nav-index %}active{% endblock %}
+{% block page-name %} Dashboard {% endblock %}
 {% block content %}
-<p>Hello world 2! </p>
+<div class="row gx-4 justify-content-start mb-3">
+    {% if tables %}
+    {% for table in tables %}
+    <div class="col-lg-4 col-md-12 mb-4">
+        <div class="card h-100
+        {% if not table.is_maintenance %}
+            border-danger
+        {% elif table.order %}
+            {% if table.order.status == 'PENDING' %}
+                border-warning
+            {% elif table.order.status == 'COMPLETED' %}
+                border-primary
+            {% elif table.order.status == 'PAID' %}
+                border-success
+            {% endif %}
+        {% endif %}
+        ">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <span class="badge badge-secondary">{{table.id}}</span> {{table.name}}
+                    <span class="badge badge-secondary float-right">
+                        Мест: <span class="badge badge-light">{{table.chairs_counts}}
+                    </span>
+                    <span class="sr-only">Мест: </span>
+                    </span>
+                </h5>
+                {% if not table.is_maintenance %}
+                <h6 class="card-subtitle mb-2 text-danger"><span class="badge badge-danger">Стол не обслуживает</span>
+                </h6>
+                {% elif table.order %}
+                <h6 class="card-subtitle mb-2">
+                        <span class="badge
+                                        {% if table.order.status == 'PENDING' %}
+                                            badge-warning
+                                        {% elif table.order.status == 'COMPLETED' %}
+                                            badge-primary
+                                        {% elif table.order.status == 'PAID' %}
+                                            badge-success
+                                        {% endif %}
+                        ">{{table.order.get_status_display}}</span>
+                </h6>
+                {% else %}
+                <h6 class="card-subtitle mb-2"><span class="badge badge-secondary">Свободен</span></h6>
+                {% endif %}
+            </div>
+            <div class="card-body d-flex flex-column h-100">
+                {% if not table.is_maintenance %}
+                <p class="card-text">
+                    {{table.description}}
+                    <br>
+                    <small class="text-muted">Обслуживание стола отключено в настройках.</small>
+                </p>
+                <div>
+                    <a class="btn btn btn-success btn-sm" href="{% url 'table-update' table.id %}">
+                        Включить
+                    </a>
+                </div>
+                {% elif table.order %}
+                <div class="card-text">
+                    <ul class="list-group mb-3">
+                        {% for product in table.order.order_items.all|slice:":5" %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{product.product.name}}
+                            <span class="badge badge-secondary float-right">
+                        {{product.product.price}} ₽ <span class="badge badge-light">x{{product.quantity}}
+                    </span>
+                    <span class="sr-only">{{product.product.price}} ₽ </span>
+                    </span>
+                        </li>
+                        {% endfor %}
+                        {% if table.order.order_items.all|length > 5 %}
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{% url 'order' table.order.id %}">
+                                Еще продуктов...</a>
+                            <span class="badge badge-primary float-right">
+                        {% with total_items=table.order.order_items.all|length %}
+                            {% with remaining=total_items|add:-5 %}
+                                {{ remaining }}
+                            {% endwith %}
+                        {% endwith %}
+                    </span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <p class="h4 mb-3 d-flex flex-row-reverse">
+                    <span class="badge badge-info float-right">
+                        Итого: <span class="badge badge-light">{{table.order.total_price}} ₽
+                    </span>
+                    <span class="sr-only">Итого: </span>
+                </span>
+                    </p>
+                </div>
+                <div class="mt-auto justify-content-between">
+                    <a class="btn btn btn-primary btn-sm" href="{% url 'order' table.order.id %}">
+                        Подробнее
+                    </a>
+                    {% if table.order.status == "PENDING" %}
+                    <a class="btn btn btn-outline-primary btn-sm" href="{% url 'order-complete' table.order.id %}">
+                        Готово
+                    </a>
+                    <a class="btn btn btn-outline-danger btn-sm" href="{% url 'order-cancel' table.order.id %}">
+                        Отменить
+                    </a>
+                    {% elif table.order.status == "COMPLETED" %}
+                    <a class="btn btn btn-outline-info btn-sm" href="{% url 'order-pay' table.order.id %}">
+                        Оплачено
+                    </a>
+                    <a class="btn btn btn-outline-danger btn-sm" href="{% url 'order-remove' table.order.id %}">
+                        Удалить
+                    </a>
+                    {% endif %}
+                </div>
+
+                {% else %}
+                <p>
+                    {{ table.description }}
+                </p>
+                <div>
+                    <a class="btn btn btn-success btn-sm" href="{% url 'order-create' %}">
+                        + Заказ
+                    </a>
+                    <a class="btn btn btn-outline-danger btn-sm" href="{% url 'table-update' table.id %}">
+                        Отключить
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Обновлено:
+                    {% if table.order %}
+                    {{table.order.modified_date}}
+                    {% else %}
+                    {{table.modified_date}}
+                    {% endif %}
+                </small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        Отсутствуют столы! <a href="{% url 'table-create'  %}">Создайте стол</a>!
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

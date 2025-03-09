@@ -24,7 +24,7 @@
                         <th scope="row">{{table.id}}</th>
                         <td>{{table.name}}</td>
                         <td>{{table.chairs_counts}}</td>
-                        <td>{{table.description}}</td>
+                        <td class="auto-width">{{table.description}}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -33,7 +33,7 @@
         </div>
         {% endif %}
         <h4><span class="badge badge-primary">
-            Кол-во записей: <span class="badge .badge-pill badge-light">{{data_length}}</span>
+            Кол-во записей: <span class="badge badge-light">{{data_length}}</span>
             <span class="sr-only">Кол-во записей: </span>
         </span></h4>
     </div>
@@ -46,7 +46,7 @@
                 <label for="agreeCheck">Я подтверждаю, что это действие нельзя отменить!</label>
             </div>
             <button type="submit" id="agree" class="btn btn-danger" disabled>Удалить</button>
-            <a class="btn btn-secondary" href="{% url 'tables' %}">Отмена</a>
+            <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
         </form>
     </div>
 </div>

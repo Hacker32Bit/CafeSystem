@@ -1,10 +1,10 @@
 {% extends "tables.html" %}
-{% block title %} CafeSystem | Редактировать столик {% endblock %}
-{% block nav-tables %}active{% endblock %}
-{% block page-name %} Редактирование стола "{{table.name}}" {% endblock %}
+{% block title %} CafeSystem | Создать продукт {% endblock %}
+{% block nav-products %}active{% endblock %}
+{% block page-name %} Форма создания продукта {% endblock %}
 {% block content %}
 <div class="row">
-    <form action="{% url 'update' table.id %}" method="POST">
+    <form action="" method="POST">
         {% csrf_token %}
         {% for field in form %}
         <div class="form-group">
@@ -15,12 +15,13 @@
             <div class="alert alert-danger" role="alert">
                 {{ error }}
             </div>
+
             {% endfor %}
             {% endif %}
         </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary">Обновить</button>
-        <a class="btn btn-secondary" href="{% url 'tables' %}">Отмена</a>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
     </form>
 </div>
 {% endblock %}

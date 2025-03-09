@@ -1,6 +1,11 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
+
+from tables.models import Table
 
 
 # Create your views here.
 def index(request):
-    return render(request, "index.html")
+    tables = Table.objects.select_related('order').all()
+
+    context = {'tables': tables}
+    return render(request, "index.html", context)

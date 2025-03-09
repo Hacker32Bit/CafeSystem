@@ -1,5 +1,5 @@
 {% extends "tables.html" %}
-{% block title %} CafeSystem | Редактировать столик {% endblock %}
+{% block title %} CafeSystem | Удалить столик {% endblock %}
 {% block nav-tables %}active{% endblock %}
 {% block page-name %} Вы собираетесь удалить: "{{table.name}}" {% endblock %}
 {% block content %}
@@ -7,9 +7,10 @@
     <div class="container mb-3">
         <h4><span class="badge badge-secondary">#{{table.id}}</span> {{table.name}} </h4>
         <h4><span class="badge badge-primary">
-            Кол-во стульев: <span class="badge .badge-pill badge-light">{{table.chairs_counts}}</span>
+            Кол-во стульев: <span class="badge badge-light">{{table.chairs_counts}}</span>
             <span class="sr-only">Кол-во стульев: </span>
         </span></h4>
+        {% if product.description %}
         <div class="card">
             <div class="card-header">
                 Описание:
@@ -18,9 +19,10 @@
                 <p class="card-text">{{table.description}}</p>
             </div>
         </div>
+        {% endif %}
     </div>
     <div class="container">
-        <form action="{% url 'delete' table.id %}" method="POST">
+        <form action="{% url 'table-delete' table.id %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <input id="agreeCheck" type="checkbox"
@@ -28,7 +30,7 @@
                 <label for="agreeCheck">Я подтверждаю, что это действие нельзя отменить!</label>
             </div>
             <button type="submit" id="agree" class="btn btn-danger" disabled>Удалить</button>
-            <a class="btn btn-secondary" href="{% url 'tables' %}">Отмена</a>
+            <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
         </form>
     </div>
 </div>

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %} CafeSystem {% endblock %}
+{% block nav-orders %}active{% endblock %}
+{% block page-name %} Заказ #{{order.id}} {% endblock %}
+{% block content %}
+<div class="row mb-3">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a class="btn btn-primary" href="{{request.META.HTTP_REFERER}}" role="button">Назад</a>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="tab-content table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Кол-во</th>
+                <th scope="col">На складе</th>
+                <th scope="col">Цена единицы</th>
+                <th scope="col">Оптовая цена</th>
+                <th scope="col">Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in order.order_items.all %}
+            <tr class="{% if not order.is_maintenance %}order-secondary{% endif %}">
+                <th scope="row">{{product.product.id}}</th>
+                <td>{{product.product.name}}</td>
+                <td>{{product.quantity}}</td>
+                <td>{{product.product.quantity}}</td>
+                <td>{{product.product.price}} ₽</td>
+                <td>{{product.product.base_price}} ₽</td>
+                <td class="auto-width">{{product.product.description}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">{{order.total_price}} ₽</th>
+                <th scope="col">{{order.total_base_price}} ₽</th>
+                <th scope="col"></th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

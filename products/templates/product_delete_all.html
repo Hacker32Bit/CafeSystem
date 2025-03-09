@@ -1,0 +1,55 @@
+{% extends "products.html" %}
+{% block title %} CafeSystem | Удаление всех продуктов {% endblock %}
+{% block nav-products %}active{% endblock %}
+{% block page-name %} Вы собираетесь удалить все продукты {% endblock %}
+{% block content %}
+<div class="row">
+    <div class="container mb-3">
+        {% if products %}
+        <p>Показаны 1-10 записей</p>
+        <div class="row mb-3">
+            <div class="tab-content table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Наименование</th>
+                        <th scope="col">Кол-во</th>
+                        <th scope="col">Цена</th>
+                        <th scope="col">Оптовая цена</th>
+                        <th scope="col">Описание</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td scope="row">{{product.name}}</td>
+                        <td>{{product.quantity}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.base_price}}</td>
+                        <td class="auto-width">{{product.description}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+        <h4><span class="badge badge-primary">
+            Кол-во записей: <span class="badge badge-light">{{data_length}}</span>
+            <span class="sr-only">Кол-во записей: </span>
+        </span></h4>
+    </div>
+    <div class="container">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input id="agreeCheck" type="checkbox"
+                       onchange="document.getElementById('agree').disabled = !this.checked;"/>
+                <label for="agreeCheck">Я подтверждаю, что это действие нельзя отменить!</label>
+            </div>
+            <button type="submit" id="agree" class="btn btn-danger" disabled>Удалить</button>
+            <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

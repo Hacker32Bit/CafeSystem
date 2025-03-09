@@ -1,5 +1,3 @@
-from django.forms import Textarea
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import TableForm
@@ -20,7 +18,7 @@ def create(request):
             return redirect('tables')
 
     context = {'form': form}
-    return render(request, "form.html", context)
+    return render(request, "table_form.html", context)
 
 
 def update(request, table_id):
@@ -34,7 +32,7 @@ def update(request, table_id):
         return redirect('tables')
 
     context = {'table': table, 'form': form}
-    return render(request, 'update.html', context)
+    return render(request, 'table_update.html', context)
 
 
 def delete(request, table_id):
@@ -44,7 +42,7 @@ def delete(request, table_id):
         table.delete()
         return redirect('tables')
 
-    return render(request, 'delete.html', context)
+    return render(request, 'table_delete.html', context)
 
 
 def delete_all(request):
@@ -54,4 +52,4 @@ def delete_all(request):
         tables.delete()
         return redirect('tables')
 
-    return render(request, 'delete_all.html', context)
+    return render(request, 'table_delete_all.html', context)

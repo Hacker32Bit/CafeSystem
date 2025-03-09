@@ -1,0 +1,54 @@
+{% extends "tables.html" %}
+{% block title %} CafeSystem | Создать продукт {% endblock %}
+{% block nav-orders %}active{% endblock %}
+{% block page-name %} Форма создания заказа {% endblock %}
+{% block content %}
+<div class="row">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {% for field in order_form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+
+            {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+        <h3>Добавить продукты</h3>
+
+        <div id="products-list">
+            <div class="product-item form-group">
+                <div class="form-row">
+                    <div class="col-md-9">
+                        <select class="custom-select" name="product">
+                            {% for product in products %}
+                            <option value="{{ product.id }}">{{ product.name }} ({{ product.price }}₽)</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control" name="quantity" value="1" min="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="addProduct()">Добавить продукт</button>
+            <button type="submit" class="btn btn-success">Сохранить</button>
+            <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
+    </form>
+</div>
+<script>
+    function addProduct() {
+        const productsList = document.getElementById('products-list');
+        const productItem = productsList.children[0].cloneNode(true);
+        productsList.appendChild(productItem);
+    }
+</script>
+{% endblock %}

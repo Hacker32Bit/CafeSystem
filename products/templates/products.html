@@ -1,6 +1,51 @@
 {% extends "base.html" %}
 {% block title %} CafeSystem {% endblock %}
 {% block nav-products %}active{% endblock %}
+{% block page-name %} Продуткы {% endblock %}
 {% block content %}
-<h1>Products</h1>
+<div class="row mb-3">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a class="btn btn-success" href="create" role="button">Создать</a>
+        <a class="btn btn-danger" href="delete_all" role="button">Удалить все</a>
+    </div>
+</div>
+<div class="row mb-3">
+    {% if products %}
+    <div class="tab-content table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Наименование</th>
+                <th scope="col">Кол-во</th>
+                <th scope="col">Цена</th>
+                <th scope="col">Оптовая цена</th>
+                <th scope="col">Описание</th>
+                <th scope="col">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+            <tr>
+                <td scope="row">{{product.name}}</td>
+                <td>{{product.quantity}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.base_price}}</td>
+                <td class="auto-width">{{product.description}}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a class="btn btn-primary btn-sm" href="{% url 'product-update' product.id %}" role="button">Изменить</a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'product-delete' product.id %}" role="button">Удалить</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        Отсутствуют продукты!
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

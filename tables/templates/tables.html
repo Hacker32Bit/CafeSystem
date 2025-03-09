@@ -20,20 +20,19 @@
                 <th scope="col">Кол-во стульев</th>
                 <th scope="col">Описание</th>
                 <th scope="col">Действие</th>
-
             </tr>
             </thead>
             <tbody>
             {% for table in tables %}
-            <tr>
+            <tr class="{% if not table.is_maintenance %}table-secondary{% endif %}">
                 <th scope="row">{{table.id}}</th>
                 <td>{{table.name}}</td>
                 <td>{{table.chairs_counts}}</td>
-                <td>{{table.description}}</td>
+                <td class="auto-width">{{table.description}}</td>
                 <td>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <a class="btn btn-primary" href="{% url 'update' table.id %}" role="button">Изменить</a>
-                        <a class="btn btn-danger" href="{% url 'delete' table.id %}" role="button">Удалить</a>
+                    <div class="btn-group float-right" role="group" aria-label="Basic example">
+                        <a class="btn btn-primary btn-sm" href="{% url 'table-update' table.id %}" role="button">Изменить</a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'table-delete' table.id %}" role="button">Удалить</a>
                     </div>
                 </td>
             </tr>

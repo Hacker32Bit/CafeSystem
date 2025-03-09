@@ -1,0 +1,53 @@
+{% extends "products.html" %}
+{% block title %} CafeSystem | Удалить продукт {% endblock %}
+{% block nav-products %}active{% endblock %}
+{% block page-name %} Вы собираетесь удалить: "{{product.name}}" {% endblock %}
+{% block content %}
+<div class="row">
+    <div class="container mb-3">
+        <h4>
+            <span class="badge badge-secondary">#{{product.id}}</span> {{product.name}}
+        </h4>
+        <h4>
+            <span class="badge badge-success">
+            Цена: <span class="badge badge-light">{{product.price}}</span>
+            <span class="sr-only">Цена: </span>
+            </span>
+            {% if product.base_price %}
+            <span class="badge badge-info">
+            Оптовая цена: <span class="badge badge-light">{{product.base_price}}</span>
+            <span class="sr-only">Оптовая цена: </span>
+            </span>
+            {% endif %}
+        </h4>
+
+        <h4>
+            <span class="badge badge-primary">
+            Количество: <span class="badge badge-light">{{product.quantity}}</span>
+            <span class="sr-only">Количество: </span>
+        </span></h4>
+        {% if product.description %}
+        <div class="card">
+            <div class="card-header">
+                Описание:
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{product.description}}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="container">
+        <form action="{% url 'product-delete' product.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input id="agreeCheck" type="checkbox"
+                       onchange="document.getElementById('agree').disabled = !this.checked;"/>
+                <label for="agreeCheck">Я подтверждаю, что это действие нельзя отменить!</label>
+            </div>
+            <button type="submit" id="agree" class="btn btn-danger" disabled>Удалить</button>
+            <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
