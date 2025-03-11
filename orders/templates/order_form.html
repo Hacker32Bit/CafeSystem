@@ -5,6 +5,9 @@
 {% block content %}
 <div class="row">
     <form action="" method="POST">
+        <!--
+        Форма генерируемая Django для создания заказа
+        !-->
         {% csrf_token %}
         {% for field in order_form %}
         <div class="form-group">
@@ -21,7 +24,9 @@
         </div>
         {% endfor %}
         <h3>Добавить продукты</h3>
-
+        <!--
+        Список продуктов с 1-м примером(Далее с помощью JS)
+        !-->
         <div id="products-list">
             <div class="product-item form-group">
                 <div class="form-row">
@@ -47,6 +52,9 @@
             <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
     </form>
 </div>
+<!--
+Скрипт на клонирование элемента формы продукта и удаление, оставляя минимум 1 продукт.
+!-->
 <script>
     function addProduct() {
         const productsList = document.getElementById('products-list');
@@ -63,6 +71,10 @@
             productItem.remove()
     }
 </script>
+<!--
+Парсинг ссылки. Если ссылка в виде http://.../orders/create#id_table_number=3,
+то мы пришли из главной страницы кликнув +заказ с конкретного стола. Тогда по умолчанию выбрать стол #3.
+!-->
 <script>
     var hashParams = window.location.hash.substr(1).split('&'); // substr(1) to remove the `#`
     console.log(hashParams)

@@ -5,6 +5,9 @@
 {% block content %}
 <div class="row">
     <form action="" method="POST">
+        <!--
+        Форма генерируемая Django для создания заказа
+        !-->
         {{order_form}}
         {% csrf_token %}
         {% for field in order_form %}
@@ -22,7 +25,9 @@
         </div>
         {% endfor %}
         <h3>Добавить продукты</h3>
-
+        <!--
+        Список продуктов с 1-м примером(Далее с помощью JS)
+        !-->
         <div id="products-list">
             <div class="product-item form-group">
                 <div class="form-row">
@@ -48,6 +53,9 @@
             <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
     </form>
 </div>
+<!--
+Скрипт на клонирование элемента формы продукта и удаление, оставляя минимум 1 продукт.
+!-->
 <script>
     function addProduct() {
         const productsList = document.getElementById('products-list');

@@ -5,8 +5,14 @@
 {% block content %}
 <div class="row gx-4 justify-content-start mb-3">
     {% if tables %}
+    <!--
+    Если есть столики. То отображаем все
+    !-->
     {% for table in tables %}
     <div class="col-lg-4 col-md-12 mb-4">
+        <!--
+        Выбираем цвета(классом) для статуса стола и заказов
+        !-->
         <div class="card h-100
         {% if not table.is_maintenance %}
             border-danger
@@ -20,6 +26,9 @@
             {% endif %}
         {% endif %}
         ">
+            <!--
+            Отображаем в card-header id, название, и кол-во стульев
+            !-->
             <div class="card-header">
                 <h5 class="card-title">
                     <span class="badge badge-secondary">{{table.id}}</span> {{table.name}}
@@ -29,9 +38,15 @@
                     <span class="sr-only">Мест: </span>
                     </span>
                 </h5>
+                <!--
+                Если стол не обслуживает, то отображаем красным.
+                !-->
                 {% if not table.is_maintenance %}
                 <h6 class="card-subtitle mb-2 text-danger"><span class="badge badge-danger">Стол не обслуживает</span>
                 </h6>
+                <!--
+                Если стол обслуживает, то проверяем на наличия заказа(order)
+                !-->
                 {% elif table.order %}
                 <h6 class="card-subtitle mb-2">
                         <span class="badge
@@ -45,10 +60,16 @@
                         ">{{table.order.get_status_display}}</span>
                 </h6>
                 {% else %}
+                <!--
+                В противном случае стол свободен
+                !-->
                 <h6 class="card-subtitle mb-2"><span class="badge badge-secondary">Свободен</span></h6>
                 {% endif %}
             </div>
             <div class="card-body d-flex flex-column h-100">
+                <!--
+                Отображение описание стола и кнопок в зависимости от стола и статуса заказа.
+                !-->
                 {% if not table.is_maintenance %}
                 <p class="card-text">
                     {{table.description}}
@@ -60,6 +81,9 @@
                         Включить
                     </a>
                 </div>
+                <!--
+                Если есть заказ. То отображаем первые 5 заказов. Если 5 и более, то отображаем ссылку на подробнее.
+                !-->
                 {% elif table.order %}
                 <div class="card-text">
                     <ul class="list-group mb-3">
@@ -79,6 +103,9 @@
                             <a href="{% url 'order' table.order.id %}">
                                 Еще продуктов...</a>
                             <span class="badge badge-primary float-right">
+                                <!--
+                                Подсчет оставшихся продуктов для отображения кол-ва неотображаемых продуктов.
+                                !-->
                         {% with total_items=table.order.order_items.all|length %}
                             {% with remaining=total_items|add:-5 %}
                                 {{ remaining }}
@@ -96,6 +123,9 @@
                 </span>
                     </p>
                 </div>
+                <!--
+                Генерируем кнопки быстрого действия для заказов(в зависимости от статуса заказа).
+                !-->
                 <div class="mt-auto justify-content-between">
                     <a class="btn btn btn-primary btn-sm" href="{% url 'order' table.order.id %}">
                         Подробнее
@@ -122,6 +152,9 @@
                 </div>
 
                 {% else %}
+                <!--
+                Если нет заказа. То отображаем описание стола и 2 кнопки +заказ или отключение стола.
+                !-->
                 <p>
                     {{ table.description }}
                 </p>
@@ -137,6 +170,11 @@
 
             </div>
             <div class="card-footer">
+                <!--
+                Отображение последнего действия.
+                Если стол пустой, то дата изменения стола.
+                Если там заказ. То последнее изменение заказа.
+                !-->
                 <small class="text-muted">Обновлено:
                     {% if table.order %}
                     {{table.order.modified_date}}
@@ -148,6 +186,9 @@
         </div>
     </div>
     {% endfor %}
+    <!--
+    Если нет столиков. Предложить создать столик
+    !-->
     {% else %}
     <div class="alert alert-warning" role="alert">
         Отсутствуют столы! <a href="{% url 'table-create'  %}">Создайте стол</a>!

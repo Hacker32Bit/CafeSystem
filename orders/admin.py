@@ -3,13 +3,13 @@ from django.contrib import admin
 from tables.models import Table
 from .models import Order, OrderItem
 
-# Unregister the existing Order model if it is already registered
+# Убираю существующий Order из админки
 admin.site.unregister(Order)
 
-# Define inline for OrderItem
+# Определяю Inline 1 заказ предмета с экстра полей для добавления товаров
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
-    extra = 1  # Number of empty forms to display
+    extra = 1
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -21,16 +21,17 @@ class OrderAdmin(admin.ModelAdmin):
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'table_number':
-            # Get the object being edited, if any
+            # Получаем измененный объект
             obj_id = request.resolver_match.kwargs.get('object_id')
             if obj_id:
-                # Editing an existing order
+                # Если редактируемый заказ
                 order = Order.objects.get(pk=obj_id)
-                # Include the current table plus available tables
+                # Отобразить текущий стол + свободные столы
                 kwargs['queryset'] = Table.objects.filter(is_available=True, is_maintenance=True) | Table.objects.filter(pk=order.table_number.pk)
             else:
-                # Creating a new order
+                # В противном случае это новый заказ. Отображаем только свободные столы
                 kwargs['queryset'] = Table.objects.filter(is_available=True, is_maintenance=True)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+# Регистрируем измененный Order, и OrderAdmin
 admin.site.register(Order, OrderAdmin)

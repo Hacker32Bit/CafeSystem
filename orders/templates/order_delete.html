@@ -5,6 +5,9 @@
 {% block content %}
 <div class="row">
     <div class="container mb-3">
+        <!--
+        Отображение номера стола и статуса заказа
+        !-->
         <h4>
             <span class="badge badge-secondary">
             Стол: <span class="badge badge-light">{{order.table_number}}</span>
@@ -21,6 +24,9 @@
                 <span class="sr-only">Стол: </span>
         </span>
         </h4>
+        <!--
+        Если есть описание, то отобразить
+        !-->
         {% if order.description %}
         <div class="card">
             <div class="card-header">
@@ -35,6 +41,9 @@
     </div>
     <div class="tab-content table-responsive">
         <h3>Список заказов:</h3>
+        <!--
+        Таблица продуктов
+        !-->
         <table class="table">
             <thead>
             <tr>
@@ -72,9 +81,12 @@
         </table>
     </div>
 
-                <h6>Заказ создан: {{order.created_date}}<br>
+    <h6>Заказ создан: {{order.created_date}}<br>
         <small>Заказ изменен: {{order.modified_date}}</small>
-        </h6>
+    </h6>
+    <!--
+    Форма требующая подтвердить действие
+    !-->
     <div class="container">
         <form action="{% url 'order-remove' order.id %}" method="POST">
             {% csrf_token %}
@@ -83,6 +95,9 @@
                        onchange="document.getElementById('agree').disabled = !this.checked;"/>
                 <label for="agreeCheck">Я подтверждаю, что это действие нельзя отменить!</label>
             </div>
+            <!--
+            Кнопки удалить и отменить заказ
+            !-->
             <button type="submit" id="agree" class="btn btn-danger" disabled>Удалить</button>
             <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
         </form>

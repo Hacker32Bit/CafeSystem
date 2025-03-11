@@ -3,6 +3,9 @@
 {% block nav-orders %}active{% endblock %}
 {% block page-name %} Заказ #{{order.id}} {% endblock %}
 {% block content %}
+<!--
+2 кнопки, назад и изменить
+!-->
 <div class="row mb-3">
     <div class="btn-group float-left" role="group">
         <a class="btn btn-primary" href="{{request.META.HTTP_REFERER}}" role="button">Назад</a>
@@ -11,6 +14,9 @@
 </div>
 <div class="row mb-3 d-flex justify-content-between">
     <div class="row float-left">
+        <!--
+        Отображение номера стола и статуса заказа
+        !-->
         <h4>
             <span class="badge badge-secondary">
             Стол: <span class="badge badge-light">{{order.table_number}}</span>
@@ -27,6 +33,9 @@
                 <span class="sr-only">Стол: </span>
         </span>
         </h4>
+        <!--
+        Если есть описание, то отобразить
+        !-->
         {% if order.description %}
         <div class="card">
             <div class="card-header">
@@ -38,6 +47,9 @@
         </div>
         {% endif %}
     </div>
+    <!--
+    Кнопки для переключения статуса
+    !-->
     <div class="btn-group float-right" role="group">
         {% if order.status == "PENDING" %}
         <a class="btn btn-warning" role="button">В ожидании</a>
@@ -57,6 +69,9 @@
 <div class="row mb-3">
     <div class="tab-content table-responsive">
         <h3>Список заказов:</h3>
+        <!--
+        Таблица с продуктами
+        !-->
         <table class="table">
             <thead>
             <tr>
@@ -92,7 +107,13 @@
             </tr>
             </tbody>
         </table>
+        <h6>Заказ создан: {{order.created_date}}<br>
+            <small>Заказ изменен: {{order.modified_date}}</small>
+        </h6>
     </div>
+    <!--
+    Кнопки удалить и отменить заказ
+    !-->
     <div role="group">
         <a class="btn btn-outline-danger" href="{% url 'order-remove' order.id %}" role="button">Отменить заказ</a>
         <a class="btn btn-danger" href="{% url 'order-remove' order.id %}" role="button">Удалить</a>

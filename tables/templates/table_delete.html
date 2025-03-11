@@ -5,12 +5,18 @@
 {% block content %}
 <div class="row">
     <div class="container mb-3">
+        <!--
+        Отображение номер стола, наименование, и количество стульев
+        !-->
         <h4><span class="badge badge-secondary">#{{table.id}}</span> {{table.name}} </h4>
         <h4><span class="badge badge-primary">
             Кол-во стульев: <span class="badge badge-light">{{table.chairs_counts}}</span>
             <span class="sr-only">Кол-во стульев: </span>
         </span></h4>
-        {% if product.description %}
+        <!--
+        Если есть описание, то отобразить
+        !-->
+        {% if table.description %}
         <div class="card">
             <div class="card-header">
                 Описание:
@@ -21,6 +27,9 @@
         </div>
         {% endif %}
     </div>
+    <!--
+    Форма подтверждения удаления
+    !-->
     <div class="container">
         <form action="{% url 'table-delete' table.id %}" method="POST">
             {% csrf_token %}

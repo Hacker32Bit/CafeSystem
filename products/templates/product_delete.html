@@ -5,9 +5,15 @@
 {% block content %}
 <div class="row">
     <div class="container mb-3">
+        <!--
+        Отображение номер продукта и наименование
+        !-->
         <h4>
             <span class="badge badge-secondary">#{{product.id}}</span> {{product.name}}
         </h4>
+        <!--
+        Отображение цен
+        !-->
         <h4>
             <span class="badge badge-success">
             Цена: <span class="badge badge-light">{{product.price}}</span>
@@ -20,12 +26,17 @@
             </span>
             {% endif %}
         </h4>
-
         <h4>
+            <!--
+            Отображение количества
+            !-->
             <span class="badge badge-primary">
             Количество: <span class="badge badge-light">{{product.quantity}}</span>
             <span class="sr-only">Количество: </span>
         </span></h4>
+        <!--
+        Если есть описание, то отобразить
+        !-->
         {% if product.description %}
         <div class="card">
             <div class="card-header">
@@ -37,6 +48,9 @@
         </div>
         {% endif %}
     </div>
+    <!--
+    Форма подтверждения удаления
+    !-->
     <div class="container">
         <form action="{% url 'product-delete' product.id %}" method="POST">
             {% csrf_token %}

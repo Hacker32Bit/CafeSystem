@@ -6,6 +6,9 @@
 <div class="row">
     <div class="container mb-3">
         {% if orders %}
+        <!--
+        Если есть заказы, показать первые 10
+        !-->
         <p>Показаны 1-10 записей</p>
         <div class="row mb-3">
             <div class="tab-content table-responsive">
@@ -36,11 +39,17 @@
             </div>
         </div>
         {% endif %}
+        <!--
+        Показать кол-во заказов
+        !-->
         <h4><span class="badge badge-primary">
             Кол-во записей: <span class="badge badge-light">{{data_length}}</span>
             <span class="sr-only">Кол-во записей: </span>
         </span></h4>
     </div>
+    <!--
+    Форма требующая подтверждения.
+    !-->
     <div class="container">
         <form action="" method="POST">
             {% csrf_token %}
@@ -49,6 +58,9 @@
                        onchange="document.getElementById('agree').disabled = !this.checked;"/>
                 <label for="agreeCheck">Я подтверждаю, что это действие нельзя отменить!</label>
             </div>
+            <!--
+            Кнопки удалить и отменить заказ
+            !-->
             <button type="submit" id="agree" class="btn btn-danger" disabled>Удалить</button>
             <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
         </form>

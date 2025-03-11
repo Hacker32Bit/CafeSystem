@@ -3,6 +3,9 @@
 {% block nav-tables %}active{% endblock %}
 {% block page-name %} Столы {% endblock %}
 {% block content %}
+<!--
+Кнопки действия со столами
+!-->
 <div class="row mb-3">
     <div class="btn-group" role="group" aria-label="Basic example">
         <a class="btn btn-success" href="create" role="button">Создать</a>
@@ -11,6 +14,9 @@
 </div>
 <div class="row mb-3">
     {% if tables %}
+    <!--
+    Если есть столы. То отобразить их список в таблице
+    !-->
     <div class="tab-content table-responsive">
         <table class="table">
             <thead>
@@ -41,6 +47,9 @@
         </table>
     </div>
     {% else %}
+    <!--
+    Если нет столов, то сообщить alert-ом
+    !-->
     <div class="alert alert-warning" role="alert">
         Отсутствуют столики!
     </div>

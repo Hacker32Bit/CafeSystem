@@ -5,6 +5,9 @@
 {% block content %}
 <div class="row">
     <form action="{% url 'table-update' table.id %}" method="POST">
+        <!--
+        Форма изменения стола генерируемая Django
+        !-->
         {% csrf_token %}
         {% for field in form %}
         <div class="form-group">

@@ -3,6 +3,9 @@
 {% block nav-products %}active{% endblock %}
 {% block page-name %} Продуткы {% endblock %}
 {% block content %}
+<!--
+Кнопки действия с продуктами
+!-->
 <div class="row mb-3">
     <div class="btn-group" role="group" aria-label="Basic example">
         <a class="btn btn-success" href="create" role="button">Создать</a>
@@ -11,6 +14,9 @@
 </div>
 <div class="row mb-3">
     {% if products %}
+    <!--
+    Если есть продукты, то отобразить список
+    !-->
     <div class="tab-content table-responsive">
         <table class="table">
             <thead>
@@ -43,6 +49,9 @@
         </table>
     </div>
     {% else %}
+    <!--
+    Если отсутствуют продукты, то сообщить alert-ом
+    !-->
     <div class="alert alert-warning" role="alert">
         Отсутствуют продукты!
     </div>

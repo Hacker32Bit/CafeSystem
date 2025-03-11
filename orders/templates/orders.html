@@ -3,6 +3,9 @@
 {% block nav-orders %}active{% endblock %}
 {% block page-name %} Заказы {% endblock %}
 {% block content %}
+<!--
+Кнопки действия с заказами
+!-->
 <div class="row mb-3">
     <div class="btn-group" role="group" aria-label="Basic example">
         <a class="btn btn-success" href="create" role="button">Создать</a>
@@ -12,6 +15,9 @@
 </div>
 <div class="row mb-3">
     {% if orders %}
+    <!--
+    Если есть заказы. То отобразить таблицу
+    !-->
     <div class="tab-content table-responsive">
         <table class="table">
             <thead>
@@ -27,7 +33,7 @@
             </thead>
             <tbody>
             {% for order in orders %}
-            <tr class="{% if not order.is_maintenance %}order-secondary{% endif %}">
+            <tr>
                 <th scope="row">{{order.id}}</th>
                 <td>{{order.table_number}}</td>
                 <td>{{order.get_status_display}}</td>
@@ -46,6 +52,9 @@
             </tbody>
         </table>
     </div>
+    <!--
+    Если нет заказов. Отобразить alert
+    !-->
     {% else %}
     <div class="alert alert-warning" role="alert">
         Отсутствуют заказы!

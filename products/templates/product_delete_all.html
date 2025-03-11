@@ -5,6 +5,9 @@
 {% block content %}
 <div class="row">
     <div class="container mb-3">
+        <!--
+        Если есть продукты, то отобразить первые 10 продуктов в таблице
+        !-->
         {% if products %}
         <p>Показаны 1-10 записей</p>
         <div class="row mb-3">
@@ -34,11 +37,17 @@
             </div>
         </div>
         {% endif %}
+        <!--
+        Отображение кол-ва удаляемых записей
+        !-->
         <h4><span class="badge badge-primary">
             Кол-во записей: <span class="badge badge-light">{{data_length}}</span>
             <span class="sr-only">Кол-во записей: </span>
         </span></h4>
     </div>
+    <!--
+    Форма подтверждение на удаление
+    !-->
     <div class="container">
         <form action="" method="POST">
             {% csrf_token %}
