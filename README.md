@@ -6,3 +6,6 @@
 ```py manage.py migrate```
 5. Create superuser ```py manage.py createsuperuser```
 6. Run ```py manage.py runserver```
+7. In web interface create some tables and products. And after that you can create order.
+
+

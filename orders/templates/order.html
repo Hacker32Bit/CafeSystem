@@ -3,10 +3,40 @@
 {% block nav-orders %}active{% endblock %}
 {% block page-name %} Заказ #{{order.id}} {% endblock %}
 {% block content %}
-<div class="row mb-3 d-flex justify-content-between">
+<div class="row mb-3">
     <div class="btn-group float-left" role="group">
         <a class="btn btn-primary" href="{{request.META.HTTP_REFERER}}" role="button">Назад</a>
         <a class="btn btn-secondary" href="{% url 'order-update' order.id %}" role="button">Изменить</a>
+    </div>
+</div>
+<div class="row mb-3 d-flex justify-content-between">
+    <div class="row float-left">
+        <h4>
+            <span class="badge badge-secondary">
+            Стол: <span class="badge badge-light">{{order.table_number}}</span>
+            <span class="sr-only">Стол: </span>
+        </span>
+            <span class="badge badge-secondary"> Статус:
+        {% if order.status == "PENDING" %}
+            <span class="badge badge-warning">В ожидании</span>
+        {% elif order.status == "COMPLETED" %}
+        <span class="badge badge-primary">Готово</span>
+        {% elif order.status == "PAID" %}
+        <span class="badge badge-success">Оплачено</span>
+        {% endif%}
+                <span class="sr-only">Стол: </span>
+        </span>
+        </h4>
+        {% if order.description %}
+        <div class="card">
+            <div class="card-header">
+                Описание:
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{order.description}}</p>
+            </div>
+        </div>
+        {% endif %}
     </div>
     <div class="btn-group float-right" role="group">
         {% if order.status == "PENDING" %}
