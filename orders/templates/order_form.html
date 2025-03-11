@@ -32,9 +32,12 @@
                             {% endfor %}
                         </select>
                     </div>
-                        <div class="col-md-3">
-                            <input type="number" class="form-control" name="quantity" value="1" min="1">
-                        </div>
+                    <div class="col-md-2">
+                        <input type="number" class="form-control" name="quantity" value="1" min="1">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-danger" onclick="removeProduct(this)">X</button>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -49,6 +52,23 @@
         const productsList = document.getElementById('products-list');
         const productItem = productsList.children[0].cloneNode(true);
         productsList.appendChild(productItem);
+    }
+
+    function removeProduct(e) {
+        const productsList = document.getElementById('products-list');
+        const productItem = e.closest(".product-item")
+        console.log(productItem)
+        console.log(productsList.children.length)
+        if(productsList.children.length > 1)
+            productItem.remove()
+    }
+</script>
+<script>
+    var hashParams = window.location.hash.substr(1).split('&'); // substr(1) to remove the `#`
+    console.log(hashParams)
+    for(var i = 0; i < hashParams.length; i++){
+        var p = hashParams[i].split('=');
+        document.getElementById(p[0]).value = decodeURIComponent(p[1]);;
     }
 </script>
 {% endblock %}

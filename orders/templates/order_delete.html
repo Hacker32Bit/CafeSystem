@@ -1,16 +1,27 @@
 {% extends "orders.html" %}
 {% block title %} CafeSystem | Удалить заказ {% endblock %}
 {% block nav-orders %}active{% endblock %}
-{% block page-name %} Вы собираетесь удалить: "{{order.name}}" {% endblock %}
+{% block page-name %} Вы собираетесь заказ №{{order.id}} {% endblock %}
 {% block content %}
 <div class="row">
     <div class="container mb-3">
-        <h4><span class="badge badge-secondary">#{{order.id}}</span> {{order.name}} </h4>
-        <h4><span class="badge badge-primary">
-            Кол-во стульев: <span class="badge badge-light">{{order.chairs_counts}}</span>
-            <span class="sr-only">Кол-во стульев: </span>
-        </span></h4>
-        {% if product.description %}
+        <h4>
+            <span class="badge badge-secondary">
+            Стол: <span class="badge badge-light">{{order.table_number}}</span>
+            <span class="sr-only">Стол: </span>
+        </span>
+            <span class="badge badge-secondary"> Статус:
+        {% if order.status == "PENDING" %}
+            <span class="badge badge-warning">В ожидании</span>
+        {% elif order.status == "COMPLETED" %}
+        <span class="badge badge-primary">Готово</span>
+        {% elif order.status == "PAID" %}
+        <span class="badge badge-success">Оплачено</span>
+        {% endif%}
+                <span class="sr-only">Стол: </span>
+        </span>
+        </h4>
+        {% if order.description %}
         <div class="card">
             <div class="card-header">
                 Описание:
@@ -20,9 +31,52 @@
             </div>
         </div>
         {% endif %}
+
     </div>
+    <div class="tab-content table-responsive">
+        <h3>Список заказов:</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Кол-во</th>
+                <th scope="col">На складе</th>
+                <th scope="col">Цена единицы</th>
+                <th scope="col">Оптовая цена</th>
+                <th scope="col">Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in order.order_items.all %}
+            <tr class="{% if not order.is_maintenance %}order-secondary{% endif %}">
+                <th scope="row">{{product.product.id}}</th>
+                <td>{{product.product.name}}</td>
+                <td>{{product.quantity}}</td>
+                <td>{{product.product.quantity}}</td>
+                <td>{{product.product.price}} ₽</td>
+                <td>{{product.product.base_price}} ₽</td>
+                <td class="auto-width">{{product.product.description}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">{{order.total_price}} ₽</th>
+                <th scope="col">{{order.total_base_price}} ₽</th>
+                <th scope="col"></th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+                <h6>Заказ создан: {{order.created_date}}<br>
+        <small>Заказ изменен: {{order.modified_date}}</small>
+        </h6>
     <div class="container">
-        <form action="{% url 'order-delete' order.id %}" method="POST">
+        <form action="{% url 'order-remove' order.id %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <input id="agreeCheck" type="checkbox"

@@ -1,34 +1,38 @@
-{% extends "tables.html" %}
+{% extends "orders.html" %}
 {% block title %} CafeSystem | Удаление всех столов {% endblock %}
-{% block nav-tables %}active{% endblock %}
-{% block page-name %} Вы собираетесь удалить все столики {% endblock %}
+{% block nav-orders %}active{% endblock %}
+{% block page-name %} Вы собираетесь удалить все заказы {% endblock %}
 {% block content %}
 <div class="row">
     <div class="container mb-3">
-        {% if tables %}
+        {% if orders %}
         <p>Показаны 1-10 записей</p>
         <div class="row mb-3">
             <div class="tab-content table-responsive">
                 <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Наименование</th>
-                        <th scope="col">Кол-во стульев</th>
-                        <th scope="col">Описание</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for table in tables %}
-                    <tr>
-                        <th scope="row">{{table.id}}</th>
-                        <td>{{table.name}}</td>
-                        <td>{{table.chairs_counts}}</td>
-                        <td class="auto-width">{{table.description}}</td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Стол</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Цена</th>
+                <th scope="col">Продуктов</th>
+                <th scope="col">Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+            <tr class="{% if not order.is_maintenance %}order-secondary{% endif %}">
+                <th scope="row">{{order.id}}</th>
+                <td>{{order.table_number}}</td>
+                <td>{{order.get_status_display}}</td>
+                <td>{{order.total_price}} ₽</td>
+                <td>{{order.items.all|length}}</td>
+                <td class="auto-width">{{order.description}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
             </div>
         </div>
         {% endif %}

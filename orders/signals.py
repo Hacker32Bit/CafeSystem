@@ -1,4 +1,4 @@
-from django.db.models.signals import m2m_changed, post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from .models import Order, OrderItem
 
@@ -22,3 +22,12 @@ def update_table_availability(sender, instance, created, **kwargs):
         if table.is_available:  # Update only if currently available
             table.is_available = False
             table.save(update_fields=['is_available'])
+
+
+@receiver(post_delete, sender=Order)
+def update_table_availability(sender, instance, **kwargs):
+    # Set the related table's is_available to True only when a new order is deleted
+    table = instance.table_number
+    if not table.is_available:  # Update only if currently available
+        table.is_available = True
+        table.save(update_fields=['is_available'])

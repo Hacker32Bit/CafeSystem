@@ -56,7 +56,7 @@
                     <small class="text-muted">Обслуживание стола отключено в настройках.</small>
                 </p>
                 <div>
-                    <a class="btn btn btn-success btn-sm" href="{% url 'table-update' table.id %}">
+                    <a class="btn btn btn-success btn-sm" href="{% url 'table-enable' table.id %}">
                         Включить
                     </a>
                 </div>
@@ -104,13 +104,17 @@
                     <a class="btn btn btn-outline-primary btn-sm" href="{% url 'order-complete' table.order.id %}">
                         Готово
                     </a>
-                    <a class="btn btn btn-outline-danger btn-sm" href="{% url 'order-cancel' table.order.id %}">
+                    <a class="btn btn btn-outline-danger btn-sm" href="{% url 'order-remove' table.order.id %}">
                         Отменить
                     </a>
                     {% elif table.order.status == "COMPLETED" %}
                     <a class="btn btn btn-outline-info btn-sm" href="{% url 'order-pay' table.order.id %}">
                         Оплачено
                     </a>
+                    <a class="btn btn btn-outline-danger btn-sm" href="{% url 'order-remove' table.order.id %}">
+                        Удалить
+                    </a>
+                    {% elif table.order.status == "PAID" %}
                     <a class="btn btn btn-outline-danger btn-sm" href="{% url 'order-remove' table.order.id %}">
                         Удалить
                     </a>
@@ -122,10 +126,10 @@
                     {{ table.description }}
                 </p>
                 <div>
-                    <a class="btn btn btn-success btn-sm" href="{% url 'order-create' %}">
+                    <a class="btn btn btn-success btn-sm" href="{% url 'order-create' %}#id_table_number={{table.id}}">
                         + Заказ
                     </a>
-                    <a class="btn btn btn-outline-danger btn-sm" href="{% url 'table-update' table.id %}">
+                    <a class="btn btn btn-outline-danger btn-sm" href="{% url 'table-disable' table.id %}">
                         Отключить
                     </a>
                 </div>

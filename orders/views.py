@@ -63,13 +63,47 @@ def update(request, order_id):
     return HttpResponse("OK")
 
 def remove(request, order_id):
-    return HttpResponse("OK")
+    order = get_object_or_404(Order, pk=order_id)
+    context = {'order': order}
+    if request.method == "POST":
+        order.delete()
+        return redirect('index')
+
+    return render(request, 'order_delete.html', context)
+
+def remove_all(request):
+    orders = Order.objects.all()
+
+    context = {'orders': orders[:10], 'data_length': len(orders)}
+    if request.method == "POST":
+        orders.delete()
+        return redirect('index')
+
+    return render(request, 'order_delete_all.html', context)
 
 def cancel(request, order_id):
     return HttpResponse("OK")
 
-def pay(request, order_id):
+def cancel_all(request):
     return HttpResponse("OK")
 
+def pay(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    order.status = "PAID"
+    order.save(update_fields=['status'])
+
+    return redirect(request.META['HTTP_REFERER'])
+
 def complete(request, order_id):
-    return HttpResponse("OK")
+    order = get_object_or_404(Order, pk=order_id)
+    order.status = "COMPLETED"
+    order.save(update_fields=['status'])
+
+    return redirect(request.META['HTTP_REFERER'])
+
+def pending(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    order.status = "PENDING"
+    order.save(update_fields=['status'])
+
+    return redirect(request.META['HTTP_REFERER'])

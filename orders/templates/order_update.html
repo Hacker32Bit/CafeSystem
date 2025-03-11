@@ -1,12 +1,13 @@
 {% extends "tables.html" %}
-{% block title %} CafeSystem | Редактировать столик {% endblock %}
-{% block nav-tables %}active{% endblock %}
-{% block page-name %} Редактирование стола "{{table.name}}" {% endblock %}
+{% block title %} CafeSystem | Создать продукт {% endblock %}
+{% block nav-orders %}active{% endblock %}
+{% block page-name %} Изменить заказ "" {% endblock %}
 {% block content %}
 <div class="row">
-    <form action="{% url 'table-update' table.id %}" method="POST">
+    <form action="" method="POST">
+        {{order_form}}
         {% csrf_token %}
-        {% for field in form %}
+        {% for field in order_form %}
         <div class="form-group">
             {{ field.label_tag }}
             {{ field }}
@@ -15,12 +16,52 @@
             <div class="alert alert-danger" role="alert">
                 {{ error }}
             </div>
+
             {% endfor %}
             {% endif %}
         </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary">Обновить</button>
-        <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
+        <h3>Добавить продукты</h3>
+
+        <div id="products-list">
+            <div class="product-item form-group">
+                <div class="form-row">
+                    <div class="col-md-9">
+                        <select class="custom-select" name="product">
+                            {% for product in products %}
+                            <option value="{{ product.id }}">{{ product.name }} ({{ product.price }}₽)</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" class="form-control" name="quantity" value="1" min="1">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-danger" onclick="removeProduct(this)">X</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="addProduct()">Добавить продукт</button>
+            <button type="submit" class="btn btn-success">Сохранить</button>
+            <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}">Отмена</a>
     </form>
 </div>
+<script>
+    function addProduct() {
+        const productsList = document.getElementById('products-list');
+        const productItem = productsList.children[0].cloneNode(true);
+        productsList.appendChild(productItem);
+    }
+
+    function removeProduct(e) {
+        const productsList = document.getElementById('products-list');
+        const productItem = e.closest(".product-item")
+        console.log(productItem)
+        console.log(productsList.children.length)
+        if(productsList.children.length > 1)
+            productItem.remove()
+    }
+</script>
 {% endblock %}

@@ -53,3 +53,17 @@ def delete_all(request):
         return redirect('tables')
 
     return render(request, 'table_delete_all.html', context)
+
+def enable(request, table_id):
+    table = get_object_or_404(Table, pk=table_id)
+    table.is_maintenance = True
+    table.save(update_fields=['is_maintenance'])
+
+    return redirect(request.META['HTTP_REFERER'])
+
+def disable(request, table_id):
+    table = get_object_or_404(Table, pk=table_id)
+    table.is_maintenance = False
+    table.save(update_fields=['is_maintenance'])
+
+    return redirect(request.META['HTTP_REFERER'])

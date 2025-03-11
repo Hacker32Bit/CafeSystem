@@ -40,6 +40,9 @@ class Order(models.Model):
         choices=STATUS_CHOICES,
         default="PENDING"
     )
+    created_date = models.DateTimeField(
+        auto_now_add=True
+    )
     modified_date = models.DateTimeField(
         auto_now=True
     )
